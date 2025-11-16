@@ -1,0 +1,35 @@
+package com.hcltech.applicationservice.config;
+
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.security.SecurityScheme;
+import io.swagger.v3.oas.models.servers.Server;
+
+import java.util.List;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class SwaggerConfig {
+    @Bean
+    OpenAPI customOpenAPI() {
+    	Server apiGatewayService = new Server()
+                .url("http://localhost:8080")
+                .description("API-Gateway");
+
+        Server applicationService = new Server()
+                .url("http://localhost:8084")
+                .description("Application-Service");
+        
+		return new OpenAPI()
+				.info(new Info().title("Application Service API").version("1.0")
+						.description("API documentation for Application Service"))
+				.servers(List.of(apiGatewayService, applicationService))
+				.addSecurityItem(new SecurityRequirement().addList("BearerAuth"))
+				.components(new io.swagger.v3.oas.models.Components().addSecuritySchemes("BearerAuth",
+						new SecurityScheme().name("BearerAuth").type(SecurityScheme.Type.HTTP).scheme("bearer")
+								.bearerFormat("JWT")));
+	}
+} 

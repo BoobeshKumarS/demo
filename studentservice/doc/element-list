@@ -1,0 +1,11 @@
+com.hcltech.studentservice
+com.hcltech.studentservice.config
+com.hcltech.studentservice.controller
+com.hcltech.studentservice.dto
+com.hcltech.studentservice.entity
+com.hcltech.studentservice.exception
+com.hcltech.studentservice.feign
+com.hcltech.studentservice.repository
+com.hcltech.studentservice.service
+com.hcltech.studentservice.service.impl
+com.hcltech.studentservice.util

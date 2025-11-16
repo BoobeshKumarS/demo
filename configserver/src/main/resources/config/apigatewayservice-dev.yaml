@@ -1,0 +1,130 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: apigatewayservice
+  cloud:
+    gateway:
+      server:
+        webflux:
+          globalcors:
+            cors-configurations:
+              '[/**]':
+                allowedOrigins:
+                  - "http://localhost:8080"
+                  - "http://localhost:3000"
+                allowedMethods:
+#                  - "*"
+                  - GET
+                  - POST
+                  - PUT
+                  - DELETE
+                  - OPTIONS
+                allowedHeaders:
+                  - "*"
+                allow-credentials: true
+                max-age: 3600
+              default-filters:
+                - DedupeResponseHeader=Access-Control-Allow-Origin
+
+          routes:
+            - id: auth-service-route
+              uri: lb://AUTHSERVICE
+              predicates:
+                - Path=/api/auth/**
+              filters:
+                - RewritePath=/api/auth/(?<segment>.*), /api/auth/$\{segment}
+
+            - id: student-service-route
+              uri: lb://STUDENTSERVICE
+              predicates:
+                - Path=/api/students/**
+              filters:
+                - RewritePath=/api/students/(?<segment>.*), /api/students/$\{segment}
+
+            - id: university-service-route
+              uri: lb://UNIVERSITYSERVICE
+              predicates:
+                - Path=/api/universities/**
+              filters:
+                - RewritePath=/api/universities/(?<segment>.*), /api/universities/$\{segment}
+
+            - id: university-service-admins-route
+              uri: lb://UNIVERSITYSERVICE
+              predicates:
+                - Path=/api/admins/**
+              filters:
+                - RewritePath=/api/admins/(?<segment>.*), /api/admins/$\{segment}
+
+            - id: university-service-courses-route
+              uri: lb://UNIVERSITYSERVICE
+              predicates:
+                - Path=/api/courses/**
+              filters:
+                - RewritePath=/api/courses/(?<segment>.*), /api/courses/$\{segment}
+
+            - id: application-service-route
+              uri: lb://APPLICATIONSERVICE
+              predicates:
+                - Path=/api/applications/**
+              filters:
+                - RewritePath=/api/applications/(?<segment>.*), /api/applications/$\{segment}
+
+            #Proxy Swagger JSONs
+            - id: auth-service-docs
+              uri: lb://AUTHSERVICE
+              predicates:
+                - Path=/authservice/v3/api-docs/**
+
+            #Proxy Swagger JSONs
+            - id: student-service-docs
+              uri: lb://STUDENTSERVICE
+              predicates:
+                - Path=/studentservice/v3/api-docs/**
+
+            #Proxy Swagger JSONs
+            - id: university-service-docs
+              uri: lb://UNIVERSITYSERVICE
+              predicates:
+                - Path=/universityservice/v3/api-docs/**
+
+            #Proxy Swagger JSONs
+            - id: application-service-docs
+              uri: lb://APPLICATIONSERVICE
+              predicates:
+                - Path=/applicationservice/v3/api-docs/**
+
+jwt:
+  secret: jMArLpHsJw0NlMuvz7esYfcgeNEmbijL0+TH/MRl86ozbrkMTWJPztO7qRQkop8bKe4lCvh8GW2FnJCj2Oy/ig==
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+    config-url: /v3/api-docs/swagger-config
+    urls:
+      - name: auth-service
+        url: /authservice/v3/api-docs
+      - name: student-service
+        url: /studentservice/v3/api-docs
+      - name: university-service
+        url: /universityservice/v3/api-docs
+      - name: application-service
+        url: /applicationservice/v3/api-docs
+
+eureka:
+  instance:
+    prefer-ip-address: false
+    hostname: localhost
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
