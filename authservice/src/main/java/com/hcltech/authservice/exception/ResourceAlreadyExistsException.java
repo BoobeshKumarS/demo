@@ -41,33 +41,4 @@ public class ResourceAlreadyExistsException extends RuntimeException {
         this.fieldName = fieldName;
         this.fieldId = null;
     }
-
-    /**
-     * Constructs exception with numeric field value.
-     *
-     * @param resourceName the name of the resource (e.g., "User")
-     * @param field the field that caused the conflict (e.g., "id")
-     * @param fieldId the numeric value of the field that caused the conflict
-     */
-    public ResourceAlreadyExistsException(String resourceName, String field, Long fieldId) {
-        super(String.format("%s already exists with %s : %d", resourceName, field, fieldId));
-        this.resourceName = resourceName;
-        this.field = field;
-        this.fieldId = fieldId;
-        this.fieldName = null;
-    }
-
-    /**
-     * Constructs exception without specific field value.
-     *
-     * @param resourceName the name of the resource (e.g., "User")
-     * @param field the field that caused the conflict
-     */
-    public ResourceAlreadyExistsException(String resourceName, String field) {
-        super(String.format("%s already exists %s", resourceName, field));
-        this.resourceName = resourceName;
-        this.field = field;
-        this.fieldName = null;
-        this.fieldId = null;
-    }
 }

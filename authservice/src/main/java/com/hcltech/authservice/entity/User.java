@@ -43,8 +43,7 @@ import lombok.Data;
  */
 @Entity
 @Data
-@Table(name = "users", uniqueConstraints = { @UniqueConstraint(columnNames = "username"),
-        @UniqueConstraint(columnNames = "email") })
+@Table(name = "users", uniqueConstraints = { @UniqueConstraint(columnNames = "email") })
 public class User {
     /**
      * Unique identifier for the user.
@@ -60,7 +59,7 @@ public class User {
      */
     @NotBlank(message = "Username is required")
     @Size(max = 50)
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String username;
 
     /**

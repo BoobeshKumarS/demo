@@ -1,0 +1,11 @@
+com.hcltech.authservice
+com.hcltech.authservice.config
+com.hcltech.authservice.controller
+com.hcltech.authservice.dto
+com.hcltech.authservice.entity
+com.hcltech.authservice.exception
+com.hcltech.authservice.repository
+com.hcltech.authservice.security
+com.hcltech.authservice.service
+com.hcltech.authservice.service.impl
+com.hcltech.authservice.util
